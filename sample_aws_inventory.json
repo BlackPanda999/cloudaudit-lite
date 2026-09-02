@@ -1,0 +1,57 @@
+{
+    "s3_buckets": [
+        {"name": "prod-data-lake", "public_access": true, "encryption": false, "versioning": true},
+        {"name": "backup-archive", "public_access": false, "encryption": true, "versioning": false},
+        {"name": "static-assets", "public_access": true, "encryption": true, "versioning": true}
+    ],
+    "iam_roles": [
+        {
+            "name": "admin-role",
+            "policies": [
+                {"statements": [{"Action": ["*"], "Effect": "Allow"}]}
+            ]
+        },
+        {
+            "name": "readonly-role",
+            "policies": [
+                {"statements": [{"Action": ["s3:GetObject"], "Effect": "Allow"}]}
+            ]
+        }
+    ],
+    "iam_access_keys": [
+        {"user": "ci-bot", "age_days": 45},
+        {"user": "legacy-deploy", "age_days": 400}
+    ],
+    "security_groups": [
+        {
+            "name": "web-sg",
+            "ingress_rules": [
+                {"port": 22, "cidr": "0.0.0.0/0"},
+                {"port": 443, "cidr": "0.0.0.0/0"}
+            ]
+        },
+        {
+            "name": "db-sg",
+            "ingress_rules": [
+                {"port": 3389, "cidr": "0.0.0.0/0"},
+                {"port": 5432, "cidr": "10.0.0.0/8"}
+            ]
+        },
+        {
+            "name": "all-open-sg",
+            "ingress_rules": [
+                {"port": 0, "cidr": "0.0.0.0/0"}
+            ]
+        }
+    ],
+    "rds_instances": [
+        {"name": "prod-db", "publicly_accessible": true, "encrypted": false},
+        {"name": "staging-db", "publicly_accessible": false, "encrypted": true}
+    ],
+    "ec2_instances": [
+        {"name": "web-1", "id": "i-12345", "public_ip": "54.1.2.3"},
+        {"name": "worker-1", "id": "i-67890", "public_ip": null}
+    ],
+    "cloudtrail_enabled": false,
+    "root_mfa_enabled": false
+}
